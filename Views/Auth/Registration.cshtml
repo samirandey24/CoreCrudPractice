@@ -1,0 +1,115 @@
+﻿@using CoreCrudWithJwt.Dto
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model UserDto
+<<div>@ViewBag.ErrorMessage</div>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+
+                <div class="card shadow border-0" style="background-color: #f1f3f2;">
+
+                    <div class="card-header text-white text-center"
+                         style="background-color: #14532d;">
+                        <h3 class="mb-0">Registration</h3>
+                    </div>
+
+                    <div class="card-body p-4">
+
+                        <form asp-action="CreateUser" method="post">
+
+                            <!-- User Name -->
+                            <div class="mb-3">
+                                <label for="username"
+                                       class="form-label fw-semibold"
+                                       style="color: #374151;">
+                                    User Name
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       id="username"
+                                       name="username"
+                                       placeholder="Enter your user name"
+                                       required
+                                       asp-for="UserName">
+
+                                <div class="invalid-feedback">
+                                    Please enter your user name.
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label for="email"
+                                       class="form-label fw-semibold"
+                                       style="color: #374151;">
+                                    Email
+                                </label>
+
+                                <input type="email"
+                                       class="form-control"
+                                       id="email"
+                                       name="email"
+                                       placeholder="Enter your email"
+                                       required
+                                       asp-for="Email">
+
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address.
+                                </div>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="mb-4">
+                                <label for="password"
+                                       class="form-label fw-semibold"
+                                       style="color: #374151;">
+                                    Password
+                                </label>
+
+                                <input type="password"
+                                       class="form-control"
+                                       id="password"
+                                       name="password"
+                                       placeholder="Enter your password"
+                                       minlength="3"
+                                       required
+                                       asp-for="Password">
+
+                                <div class="invalid-feedback">
+                                    Password must be at least 3 characters.
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid">
+                                <button type="submit"
+                                        name="btnsubmit"
+                                        class="btn text-white"
+                                        style="background-color: #14532d;">
+                                    Submit
+                                </button>
+                            </div>
+
+                        </form>
+
+                        <!-- Back to Login -->
+                        <div class="text-center mt-3">
+                            <a href="/Auth/Login"
+                               class="text-decoration-none fw-semibold"
+                               style="color: #14532d;">
+                                Back to Login
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+

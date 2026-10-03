@@ -1,0 +1,143 @@
+﻿@using CoreCrudWithJwt.Dto
+@model List<ProductDto>
+
+<div>
+    @ViewBag.ErrorMessage
+</div>
+
+<div class="container mt-5">
+
+    <div class="card shadow border-0">
+
+        <!-- Header -->
+        <div class="card-header text-white"
+             style="background-color: #14532d;">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h3 class="mb-0">
+                    Product Dashboard
+                </h3>
+
+                <form asp-action="CreateProduct" method="get">
+                    <button type="submit" class="btn btn-success">
+                        + Add Product
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+        <div class="card-body">
+
+            <!-- Column Header -->
+            <div class="row fw-bold border-bottom pb-2 mb-2">
+
+                <div class="col-md-3">
+                    Product Name
+                </div>
+
+                <div class="col-md-4">
+                    Description
+                </div>
+
+                <div class="col-md-2">
+                    Price
+                </div>
+
+                <div class="col-md-3 text-center">
+                    Actions
+                </div>
+
+            </div>
+
+            @if (Model == null)
+            {
+                <!-- Blank Row -->
+                <div class="row border-bottom py-3">
+
+                    <div class="col-md-3">
+                        &nbsp;
+                    </div>
+
+                    <div class="col-md-4">
+                        &nbsp;
+                    </div>
+
+                    <div class="col-md-2">
+                        &nbsp;
+                    </div>
+
+                    <div class="col-md-3">
+                        &nbsp;
+                    </div>
+
+                </div>
+            }
+            else if (Model.Count > 0 )
+            {
+                foreach (var product in Model)
+                {
+                    <!-- Product Row -->
+                <div class="row align-items-center border-bottom py-3">
+
+                    <!-- Product Name -->
+                    <div class="col-md-3">
+                            @product.ProductName
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-md-4">
+                            @product.Description
+                    </div>
+
+                    <!-- Price -->
+                    <div class="col-md-2">
+                            @product.Price
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="col-md-3">
+
+                        <div class="d-flex justify-content-center gap-2">
+
+                            <!-- Edit -->
+                                <form asp-action="EditProduct" asp-route-id="@product.Id" asp-route-ProductName="@product.ProductName" asp-route-Description="@product.Description" asp-route-Price="@product.Price" method="post">
+
+                                <input type="hidden"
+                                       name="id"
+                                           value="@product.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-primary btn-sm">
+                                    Edit
+                                </button>
+
+                            </form>
+
+                            <!-- Delete -->
+                                <form asp-action="DeleteProduct" asp-route-id="@product.Id" method="post">
+
+                                <input type="hidden"
+                                       name="id"
+                                           value="@product.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Are you sure you want to delete this product?');">
+                                    Delete
+                                </button>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                }
+            }
+
+        </div>
+    </div>
+
+</div>

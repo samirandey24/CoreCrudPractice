@@ -1,0 +1,62 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-5">
+                    <div class="card shadow border-0" style="background-color: #f1f3f2;">
+                        <div class="card-header text-white text-center" style="background-color: #14532d;">
+                            <h3 class="mb-0">Login</h3>
+                        </div>
+
+                        <div class="card-body p-4">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label fw-semibold" style="color: #374151;">
+                                        Email
+                                    </label>
+                                    <input type="email"
+                                           class="form-control"
+                                           id="email"
+                                           name="email"
+                                           placeholder="Enter your email"
+                                           required
+                                           oninvalid="this.classList.add('is-invalid'); this.previousElementSibling.classList.add('fw-bold');"
+                                           oninput="this.classList.remove('is-invalid'); this.previousElementSibling.classList.remove('fw-bold');">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="password" class="form-label fw-semibold" style="color: #374151;">
+                                        Password
+                                    </label>
+                                    <input type="password"
+                                           class="form-control"
+                                           id="password"
+                                           name="password"
+                                           placeholder="Enter your password"
+                                           minlength="3"
+                                           required
+                                           oninvalid="this.classList.add('is-invalid'); this.previousElementSibling.classList.add('fw-bold');"
+                                           oninput="this.classList.remove('is-invalid'); this.previousElementSibling.classList.remove('fw-bold');">
+                                </div>
+
+                                <button type="submit"
+                                        class="btn text-white w-100"
+                                        style="background-color: #14532d;">
+                                    Login
+                                </button>
+                                <div class="text-center mt-3">
+                                @* <a href="/Auth/Registration" class="text-decoration-none fw-semibold" style="color: #14532d;">  New User ? Please Register </a>*@
+                                   
+                                New User? <a asp-action="Registration">Register here</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+}
