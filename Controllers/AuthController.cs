@@ -30,7 +30,6 @@ namespace CoreCrudWithJwt.Controllers
                 if (isexists.Password == dto.Password)
                 {
                     // Generate JWT only after successful authentication
-
                     var token = _jwtservice.GenerateToken(userId: 1, useremail: dto.Email, role: "Admin");
                   
                     // Store JWT in secure HTTP-only cookie
