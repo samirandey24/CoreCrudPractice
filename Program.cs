@@ -2,10 +2,14 @@ using Azure.Core;
 using CoreCrudWithJwt.Data;
 using CoreCrudWithJwt.Exception;
 using CoreCrudWithJwt.Models;
+using CoreCrudWithJwt.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel;
 using System.Net;
@@ -22,7 +26,8 @@ builder.Services.AddControllersWithViews();
 
 //Check services folder for implementation
 builder.Services.AddMemoryCache();
-
+// Register your custom service that will use the cache
+builder.Services.AddScoped<ProductService>();
 // Check Exception folder for implementation to catch exceptions from all downstream middlewares and controllers
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -49,6 +54,35 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("iDnwDtSY2mMriFtLboeGIOCBTKKpjCXIxopMRlSv11w"))
     };
+});
+//Rate Limiter
+builder.Services.AddRateLimiter(options => {
+
+    options.AddFixedWindowLimiter("fixed", limiter => {
+        limiter.PermitLimit = 5;
+        limiter.Window=TimeSpan.FromSeconds(5);
+        limiter.QueueLimit = 0;
+    });
+
+    options.OnRejected = async (context, CancellationToken) => {
+
+    context.HttpContext.Response.StatusCode = 429;
+    context.HttpContext.Response.ContentType = "application/json";
+
+    await context.HttpContext.Response.WriteAsync(
+        new { 
+            success = false,
+            message = "Exceeds the rate limit"
+        }, CancellationToken);
+    };
+});
+//output cache for better performance
+builder.Services.AddOutputCache(options =>
+{
+    options.AddPolicy("SamiranAPICachePolicy", policy =>
+    {
+        policy.Expire(TimeSpan.FromSeconds(30));
+    });
 });
 
 // 1. Register CORS Services and define a policy
@@ -102,6 +136,10 @@ app.MapGet("/api/public-data", () => "Hello")
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseOutputCache();
+
+app.UseRateLimiter();
 
 app.MapControllerRoute(
     name: "default",
@@ -229,6 +267,12 @@ app.Run();
 //    });
 //});
 
+//N+1 Query solution by introducing Include
+//public async ayync Task<IActionResult> GetOrdersItem()
+//{
+//    var orders = await _context.Orders.Include(o => o.OrdersItems).ToListAsync();
+//    return Ok(orders);
+//}
 
 
 //Need Conditional Branching that Rejoins?

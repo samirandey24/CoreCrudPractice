@@ -1,6 +1,7 @@
 ﻿using CoreCrudWithJwt.Data;
 using CoreCrudWithJwt.Dto;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreCrudWithJwt.Controllers
@@ -13,6 +14,9 @@ namespace CoreCrudWithJwt.Controllers
         {
             _context = appDbContext;
         }
+
+        [HttpGet]
+        [OutputCache(PolicyName = "SamiranAPICachePolicy")]
         public IActionResult Index()
         {
             var products = _context.Products.Select(x => new ProductDto { Id = x.Id, ProductName = x.ProductName, Description = x.Description, Price = x.Price }).ToList();
